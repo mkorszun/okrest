@@ -13,16 +13,14 @@ import java.util.Map;
 
 public class HTTPClient {
 
-    private static final String BACKEND_URL = "https://staging-plantstore.cloudcontrolled.com";
-
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String APPLICATION_JSON = "application/json";
 
     private static final int MAX_IDLE_CONNECTIONS = 20;
     private static final long KEEP_ALIVE_DURATION_MS = 300000L;
 
+    private String backendURL;
     private OkHttpClient client;
-    private String backendURL = BACKEND_URL;
 
     public HTTPClient(String backendURL) {
         this();
