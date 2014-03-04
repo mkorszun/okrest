@@ -1,1 +1,2 @@
 [![Build Status](https://travis-ci.org/mkorszun/okrest.png?branch=master)](https://travis-ci.org/mkorszun/okrest)
+[![Coverage Status](https://coveralls.io/repos/mkorszun/okrest/badge.png)](https://coveralls.io/r/mkorszun/okrest)
