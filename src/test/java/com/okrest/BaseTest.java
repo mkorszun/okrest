@@ -5,6 +5,8 @@ import com.github.restdriver.clientdriver.ClientDriverRule;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
+import java.util.Map;
+
 import static com.github.restdriver.clientdriver.RestClientDriver.*;
 
 public class BaseTest {
@@ -34,6 +36,13 @@ public class BaseTest {
     public void setupDriver(ClientDriverRequest.Method method, String url, String body, int code, String contentType) {
         driver.addExpectation(
                 onRequestTo(url).withMethod(method),
+                giveResponse(body).withStatus(code).withContentType(contentType)
+        );
+    }
+
+    public void setupDriver(ClientDriverRequest.Method method, String url, String body, int code, String contentType, Map<String, Object> params) {
+        driver.addExpectation(
+                onRequestTo(url).withMethod(method).withParams(params),
                 giveResponse(body).withStatus(code).withContentType(contentType)
         );
     }

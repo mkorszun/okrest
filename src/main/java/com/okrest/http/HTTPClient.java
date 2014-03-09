@@ -61,7 +61,7 @@ public class HTTPClient {
             HTTPStream stream = new HTTPStream(connection);
             return stream.read();
         } catch (MalformedURLException e) {
-            throw new HTTPException(e);
+            throw new HTTPException("Malformed url: " + resource);
         } finally {
 
             if (out != null) {
@@ -83,7 +83,7 @@ public class HTTPClient {
             HTTPStream stream = new HTTPStream(connection);
             return stream.read();
         } catch (MalformedURLException e) {
-            throw new HTTPException(e);
+            throw new HTTPException("Malformed url: " + resource);
         } finally {
 
             if (connection != null) {

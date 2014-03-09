@@ -1,20 +1,23 @@
 package com.okrest.http;
 
+import com.github.restdriver.clientdriver.ClientDriverRequest;
 import com.okrest.BaseTest;
 import com.okrest.fixtures.ErrorFixture;
+import com.okrest.utils.QueryParamsBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class HTTPClientTest extends BaseTest {
 
     @Test
     public void testOK() throws IOException, HTTPException {
-        setupDriver("/path", "body", 200, "text/plain");
-        HTTPClient httpClient = new HTTPClient(driver.getBaseUrl());
-        String resp = new String(httpClient.request(HTTPMethod.GET, "/path"));
-        Assert.assertEquals("body", resp);
+        Map<String, Object> params = new QueryParamsBuilder().set("a", true).set("b", "c").build();
+        setupDriver(ClientDriverRequest.Method.GET, "/path", "body", 200, "text/plain", params);
+        byte[] resp = new HTTPClient(driver.getBaseUrl()).request(HTTPMethod.GET, "/path", params);
+        Assert.assertEquals("body", new String(resp));
     }
 
     @Test
@@ -32,5 +35,12 @@ public class HTTPClientTest extends BaseTest {
         exception.expectMessage("Unauthorized");
         setupDriver("/path", "", 401, "text/plain");
         new HTTPClient(driver.getBaseUrl()).request(HTTPMethod.GET, "path");
+    }
+
+    @Test
+    public void testMalformedURL() throws IOException, HTTPException {
+        exception.expect(HTTPException.class);
+        exception.expectMessage("Malformed url: dd://fakeurl/path");
+        new HTTPClient("dd://fakeurl").request(HTTPMethod.GET, "path");
     }
 }
