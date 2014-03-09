@@ -15,7 +15,7 @@ public class HTTPClientTest extends BaseTest {
 
     @Test
     public void testOK() throws IOException, HTTPException {
-        Map<String, Object> params = new QueryParamsBuilder().set("a", true).set("b", "c").build();
+        Map<String, Object> params = new QueryParamsBuilder().set("a", true).set("b", "c").set("d", 1).build();
         setupDriver(GET, "/path", "body", 200, "text/plain", params);
         byte[] resp = new HTTPClient(driver.getBaseUrl()).request(HTTPMethod.GET, "/path", params);
         Assert.assertEquals("body", new String(resp));

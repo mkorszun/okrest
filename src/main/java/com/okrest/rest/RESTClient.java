@@ -8,15 +8,15 @@ import org.codehaus.jackson.type.JavaType;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class RESTAction<T> extends JSONClient<T> {
+public class RESTClient<T> extends JSONClient<T> {
 
     private static final String ROOT_RESOURCE = "";
 
-    public RESTAction(String url) {
+    public RESTClient(String url) {
         super(url);
     }
 
-    public RESTAction(String url, Class<T> target) {
+    public RESTClient(String url, Class<T> target) {
         super(url, target);
     }
 

@@ -12,37 +12,37 @@ import java.util.ArrayList;
 
 import static com.github.restdriver.clientdriver.ClientDriverRequest.Method.*;
 
-public class RESTActionTest extends BaseTest {
+public class RESTClientTest extends BaseTest {
 
     @Test
     public void testCreate() throws IOException, HTTPException {
         setupDriverForEmptyResponse(POST, "/resource", new TestObject().build(1), "application/json");
-        new RESTAction(driver.getBaseUrl() + "/resource").create(new TestObject());
+        new RESTClient(driver.getBaseUrl() + "/resource").create(new TestObject());
     }
 
     @Test
     public void testUpdate() throws IOException, HTTPException {
         setupDriverForEmptyResponse(PUT, "/resource/1", new TestObject().build(1), "application/json");
-        new RESTAction(driver.getBaseUrl() + "/resource").update(1, new TestObject());
+        new RESTClient(driver.getBaseUrl() + "/resource").update(1, new TestObject());
     }
 
     @Test
     public void testRead() throws IOException, HTTPException {
         setupDriverForEmptyRequest(GET, "/resource/11", 200, new TestObject().build(11), "application/json");
-        RESTAction<TestObject> action = new RESTAction(driver.getBaseUrl() + "/resource", TestObject.class);
+        RESTClient<TestObject> action = new RESTClient(driver.getBaseUrl() + "/resource", TestObject.class);
         Assert.assertEquals(11, action.read(11).getId());
     }
 
     @Test
     public void testDelete() throws IOException, HTTPException {
         setupDriverForEmptyRequestResponse(ClientDriverRequest.Method.DELETE, "/resource/666");
-        new RESTAction(driver.getBaseUrl() + "/resource").delete(666);
+        new RESTClient(driver.getBaseUrl() + "/resource").delete(666);
     }
 
     @Test
     public void testList() throws IOException, HTTPException {
         setupDriverForEmptyRequest(GET, "/resource", 200, new TestObject().build(11, 22, 33), "application/json");
-        RESTAction<TestObject> action = new RESTAction(driver.getBaseUrl() + "/resource", TestObject.class);
+        RESTClient<TestObject> action = new RESTClient(driver.getBaseUrl() + "/resource", TestObject.class);
 
         ArrayList<TestObject> results = action.list();
 
