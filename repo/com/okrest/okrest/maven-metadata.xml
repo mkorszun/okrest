@@ -3,11 +3,12 @@
   <groupId>com.okrest</groupId>
   <artifactId>okrest</artifactId>
   <versioning>
-    <release>0.0.2</release>
+    <release>0.0.3</release>
     <versions>
       <version>0.0.2-SNAPSHOT</version>
       <version>0.0.2</version>
+      <version>0.0.3</version>
     </versions>
-    <lastUpdated>20140304205702</lastUpdated>
+    <lastUpdated>20140309173048</lastUpdated>
   </versioning>
 </metadata>
