@@ -22,7 +22,7 @@ public class HTTPStream {
     }
 
     public byte[] read() throws IOException, HTTPException {
-        if (connection.getResponseCode() == 200 || connection.getResponseCode() == 201) {
+        if (connection.getResponseCode() == 200 || connection.getResponseCode() == 201 || connection.getResponseCode() == 204) {
             return readBytes(connection.getInputStream());
         } else {
             return readError();
@@ -30,7 +30,7 @@ public class HTTPStream {
     }
 
     private byte[] readError() throws IOException, HTTPException {
-        if (Utils.in(connection.getContentType(), APPLICATION_JSON)) {
+        if (connection.getContentType() != null && Utils.in(connection.getContentType(), APPLICATION_JSON)) {
             byte[] errorBody = readBytes(connection.getErrorStream());
             Error error = mapper.readValue(errorBody, Error.class);
             throw new HTTPException(error.getError());
