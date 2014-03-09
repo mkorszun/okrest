@@ -11,39 +11,37 @@ import static com.github.restdriver.clientdriver.RestClientDriver.*;
 
 public class BaseTest {
 
-    public static final byte[] EMPTY_REQUEST = new byte[0];
-
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
     @Rule
     public ClientDriverRule driver = new ClientDriverRule();
 
-    public void setupDriver(String url, String body, int code, String contentType) {
-        driver.addExpectation(
-                onRequestTo(url).withMethod(ClientDriverRequest.Method.GET),
-                giveResponse(body).withStatus(code).withContentType(contentType)
-        );
-    }
-
-    public void setupDriver(ClientDriverRequest.Method method, String url, int code, String contentType) {
-        driver.addExpectation(
-                onRequestTo(url).withMethod(method),
-                giveEmptyResponse().withStatus(code).withContentType(contentType)
-        );
-    }
-
-    public void setupDriver(ClientDriverRequest.Method method, String url, String body, int code, String contentType) {
-        driver.addExpectation(
-                onRequestTo(url).withMethod(method),
-                giveResponse(body).withStatus(code).withContentType(contentType)
-        );
-    }
-
     public void setupDriver(ClientDriverRequest.Method method, String url, String body, int code, String contentType, Map<String, Object> params) {
         driver.addExpectation(
                 onRequestTo(url).withMethod(method).withParams(params),
-                giveResponse(body).withStatus(code).withContentType(contentType)
+                giveResponse(body, contentType).withStatus(code)
+        );
+    }
+
+    public void setupDriverForEmptyRequest(ClientDriverRequest.Method method, String url, int code, String returnedBody, String contentType) {
+        driver.addExpectation(
+                onRequestTo(url).withMethod(method),
+                giveResponse(returnedBody, contentType).withStatus(code)
+        );
+    }
+
+    public void setupDriverForEmptyResponse(ClientDriverRequest.Method method, String url, String expectedBody, String contentType) {
+        driver.addExpectation(
+                onRequestTo(url).withMethod(method).withBody(expectedBody, contentType),
+                giveEmptyResponse().withStatus(204)
+        );
+    }
+
+    public void setupDriverForEmptyRequestResponse(ClientDriverRequest.Method method, String url) {
+        driver.addExpectation(
+                onRequestTo(url).withMethod(method),
+                giveEmptyResponse().withStatus(204)
         );
     }
 }

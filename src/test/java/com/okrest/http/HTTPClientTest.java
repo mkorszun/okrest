@@ -1,6 +1,5 @@
 package com.okrest.http;
 
-import com.github.restdriver.clientdriver.ClientDriverRequest;
 import com.okrest.BaseTest;
 import com.okrest.fixtures.ErrorFixture;
 import com.okrest.utils.QueryParamsBuilder;
@@ -10,12 +9,14 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Map;
 
+import static com.github.restdriver.clientdriver.ClientDriverRequest.Method.GET;
+
 public class HTTPClientTest extends BaseTest {
 
     @Test
     public void testOK() throws IOException, HTTPException {
         Map<String, Object> params = new QueryParamsBuilder().set("a", true).set("b", "c").build();
-        setupDriver(ClientDriverRequest.Method.GET, "/path", "body", 200, "text/plain", params);
+        setupDriver(GET, "/path", "body", 200, "text/plain", params);
         byte[] resp = new HTTPClient(driver.getBaseUrl()).request(HTTPMethod.GET, "/path", params);
         Assert.assertEquals("body", new String(resp));
     }
@@ -25,7 +26,7 @@ public class HTTPClientTest extends BaseTest {
         exception.expect(HTTPException.class);
         exception.expectMessage("unauthorized");
         String body = new ErrorFixture().withReason("unauthorized").build();
-        setupDriver("/path", body, 401, "application/json");
+        setupDriverForEmptyRequest(GET, "/path", 401, body, "application/json");
         new HTTPClient(driver.getBaseUrl()).request(HTTPMethod.GET, "/path");
     }
 
@@ -33,7 +34,7 @@ public class HTTPClientTest extends BaseTest {
     public void testPlainError() throws IOException, HTTPException {
         exception.expect(HTTPException.class);
         exception.expectMessage("Unauthorized");
-        setupDriver("/path", "", 401, "text/plain");
+        setupDriverForEmptyRequest(GET, "/path", 401, "", "text/plain");
         new HTTPClient(driver.getBaseUrl()).request(HTTPMethod.GET, "path");
     }
 
