@@ -41,8 +41,8 @@ public class HTTPClient {
         return request(method, Utils.buildURI(backendURL, resource, params));
     }
 
-    public byte[] request(HTTPMethod method, String resource, byte[] body) throws IOException, HTTPException {
-        return request(method, Utils.buildURI(backendURL, resource), body);
+    public byte[] request(HTTPMethod method, String resource, byte[] body, Map<String, Object> params) throws IOException, HTTPException {
+        return request(method, Utils.buildURI(backendURL, resource, params), body);
     }
 
     private byte[] request(HTTPMethod method, URI resource, byte[] body) throws IOException, HTTPException {
