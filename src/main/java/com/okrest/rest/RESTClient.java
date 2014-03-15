@@ -7,10 +7,9 @@ import org.codehaus.jackson.type.JavaType;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class RESTClient<T> extends JSONClient<T> {
-
-    private static final String ROOT_RESOURCE = "";
 
     public RESTClient(String url) {
         super(url);
@@ -21,23 +20,43 @@ public class RESTClient<T> extends JSONClient<T> {
     }
 
     public T read(long id) throws IOException, HTTPException {
-        return send(HTTPMethod.GET, String.valueOf(id));
+        return read(id, EMPTY_PARAMS);
+    }
+
+    public T read(long id, Map<String, Object> params) throws IOException, HTTPException {
+        return send(HTTPMethod.GET, String.valueOf(id), params);
     }
 
     public void create(T object) throws IOException, HTTPException {
-        sendNoResponse(HTTPMethod.POST, ROOT_RESOURCE, mapper.writeValueAsBytes(object));
+        create(object, EMPTY_PARAMS);
+    }
+
+    public void create(T object, Map<String, Object> params) throws IOException, HTTPException {
+        sendNoResponse(HTTPMethod.POST, mapper.writeValueAsBytes(object), params);
     }
 
     public void delete(long id) throws IOException, HTTPException {
-        sendNoResponse(HTTPMethod.DELETE, String.valueOf(id));
+        delete(id, EMPTY_PARAMS);
+    }
+
+    public void delete(long id, Map<String, Object> params) throws IOException, HTTPException {
+        sendNoResponse(HTTPMethod.DELETE, String.valueOf(id), params);
     }
 
     public void update(long id, T object) throws IOException, HTTPException {
-        sendNoResponse(HTTPMethod.PUT, String.valueOf(id), mapper.writeValueAsBytes(object));
+        update(id, object, EMPTY_PARAMS);
+    }
+
+    public void update(long id, T object, Map<String, Object> params) throws IOException, HTTPException {
+        sendNoResponse(HTTPMethod.PUT, String.valueOf(id), mapper.writeValueAsBytes(object), params);
     }
 
     public ArrayList<T> list() throws IOException, HTTPException {
-        return mapper.readValue(client.request(HTTPMethod.GET, ROOT_RESOURCE), arrayList(target));
+        return list(EMPTY_PARAMS);
+    }
+
+    public ArrayList<T> list(Map<String, Object> params) throws IOException, HTTPException {
+        return mapper.readValue(client.request(HTTPMethod.GET, ROOT_RESOURCE, params), arrayList(target));
     }
 
     private JavaType arrayList(Class clazz) {
